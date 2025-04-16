@@ -79,7 +79,7 @@ async function loginAuth ({ credientials }: LoginCredientials ) {
       auth()
     }
   } catch (error: any) {
-    setError(error.response?.data.detail || 'Failed to update profile.');
+    setError(error.response?.data.detail || 'Failed to login.');
     console.error(error);
   }
 }
