@@ -1,75 +1,74 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react"; import { Link } from "react-router-dom";
 
-const Header = ({ isAuthenticated }: {isAuthenticated: boolean}) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+const Header = ({ isAuthenticated }: { isAuthenticated: boolean }) => { 
+  const [isScrolled, setIsScrolled] = useState(false); 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Scroll listener for background transition
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+useEffect(() => { const handleScroll = () => { 
+  setIsScrolled(window.scrollY > 50); };
+   window.addEventListener("scroll", handleScroll); 
+   return () => window.removeEventListener("scroll", handleScroll);
+   }, []);
 
-  // Toggle mobile menu
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+return ( 
+<header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${ isScrolled ? "bg-gray-900 shadow-md" : "bg-transparent"}`} > <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"> {/* Logo */} <Link to="/" className="text-white font-bold text-xl flex items-center gap-1"> Binary Bloom <span className="text-blue-500 text-2xl">.</span> </Link>
 
-  return (
-    <header
-      id="header"
-      className={`header sticky-top d-flex align-items-center ${
-        isScrolled ? "bg-dark shadow-sm" : "bg-transparent"
-      } transition-all`}
+    {/* Desktop Menu */}
+    <nav className="hidden xl:flex space-x-8 items-center">
+      <a href="/" className="text-white hover:text-blue-400 transition">Home</a>
+      <a href="/#about" className="text-white hover:text-blue-400 transition">About</a>
+      <a href="/#services" className="text-white hover:text-blue-400 transition">Services</a>
+      <a href="/#team" className="text-white hover:text-blue-400 transition">Team</a>
+      <a href="/contact" className="text-white hover:text-blue-400 transition">Contact Us</a>
+      {isAuthenticated ? (
+        <>
+          <Link to="/dashboard" className="text-white hover:text-blue-400 transition">Dashboard</Link>
+          <Link to="/logout" className="text-red-500 hover:text-red-400 transition">Logout</Link>
+        </>
+      ) : (
+        <>
+          <Link to="/login" className="text-white hover:text-blue-400 transition">Login</Link>
+          <Link to="/register" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Get Started</Link>
+        </>
+      )}
+    </nav>
+
+    {/* Mobile Menu Button */}
+    <button
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      className="xl:hidden text-white text-2xl focus:outline-none"
     >
-      <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-        
-        {/* Logo */}
-        <Link to="/" className="logo d-flex align-items-center text-decoration-none">
-          <h1 className={`sitename mb-0 ${isScrolled && "text-white"}`}>Binary Bloom</h1>
-          <span className="text-primary fs-4">.</span>
-        </Link>
+      <i className={`bi ${mobileMenuOpen ? "bi-x" : "bi-list"}`}></i>
+    </button>
+  </div>
 
-        {/* Nav Menu */}
-        <nav id="navmenu" className={`navmenu ${mobileMenuOpen ? "mobile-open" : ""}`}>
-          <ul className="d-flex align-items-center gap-4 mb-0 flex-column flex-xl-row">
-            <li><a href="/" className={`${isScrolled && "text-white"}`}>Home</a></li>
-            <li><a href="/#about" className={`${isScrolled && "text-white"}`}>About</a></li>
-            <li><a href="/#services" className={`${isScrolled && "text-white"}`}>Services</a></li>
-            <li><a href="/#team" className={`${isScrolled && "text-white"}`}>Team</a></li>
-            <li><a href="/contact" className={`${isScrolled && "text-white"}`}>Contact Us</a></li>
-            {isAuthenticated ? (
-              <>
-                <li><Link to="/dashboard">Dashboard</Link></li>
-                <li><Link to="/logout" className="text-danger">Logout</Link></li>
-              </>
-            ) : (
-              <>
-                <li><Link to="/login" className={`${isScrolled && "text-white"}`}>Login</Link></li>
-                <li><Link className="btn btn-primary" to="/register">Get Started</Link></li>
-              </>
-            )}
-          </ul>
-        </nav>
-
-        {/* Mobile Toggle */}
-        <i
-          className={`mobile-nav-toggle d-xl-none bi ${mobileMenuOpen ? "bi-x" : "bi-list"}`}
-          onClick={toggleMobileMenu}
-          style={{ fontSize: "28px", cursor: "pointer", color: "#fff" }}
-          aria-label="Toggle navigation"
-        ></i>
-      </div>
-    </header>
-  );
-};
+  {/* Mobile Dropdown Menu */}
+  {mobileMenuOpen && (
+    <div className="xl:hidden bg-gray-900 text-white px-4 pt-4 pb-6 space-y-4">
+      <a href="/" className="block hover:text-blue-400">Home</a>
+      <a href="/#about" className="block hover:text-blue-400">About</a>
+      <a href="/#services" className="block hover:text-blue-400">Services</a>
+      <a href="/#team" className="block hover:text-blue-400">Team</a>
+      <a href="/contact" className="block hover:text-blue-400">Contact Us</a>
+      {isAuthenticated ? (
+        <>
+          <Link to="/dashboard" className="block hover:text-blue-400">Dashboard</Link>
+          <Link to="/logout" className="block text-red-500 hover:text-red-400">Logout</Link>
+        </>
+      ) : (
+        <>
+          <Link to="/login" className="block hover:text-blue-400">Login</Link>
+          <Link
+            to="/register"
+            className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            Get Started
+          </Link>
+        </>
+      )}
+    </div>
+  )}
+</header>
+); };
 
 export default Header;
