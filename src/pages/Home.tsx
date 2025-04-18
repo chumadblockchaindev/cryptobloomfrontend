@@ -7,8 +7,8 @@ import { GiMetalBar, GiCutDiamond, GiGoldBar } from 'react-icons/gi';
 import { FaStar, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
-// import 'swiper/css';
-// import 'swiper/css/pagination';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const tabs = [
   { icon: "bi-binoculars", title: "Crypto Investments", id: "tabs-tab-1" },
@@ -21,17 +21,35 @@ const Home = () => {
   const [currentClient, setCurrentClient] = useState(0); // For client logos
   const [activeTab, setActiveTab] = useState("tabs-tab-1");
   const clientLogos = [
-    'assets/img/clients/client-1.png',
-    'assets/img/clients/client-2.png',
-    'assets/img/clients/client-3.png',
-    'assets/img/clients/client-4.png',
-    'assets/img/clients/client-5.png',
-    'assets/img/clients/client-6.png',
-    'assets/img/clients/client-7.png',
-    'assets/img/clients/client-8.png'
+    '/logo-dropbox.png',
+    '/logo-github.png',
+    '/logo-lyft.png',
+    '/logo-medium.png',
+    '/logo-slack.png',
+    '/logo-squarespace.png',
+    '/logo-squarespace.png',
+    '/logo-squarespace.png'
   ];
 
+  const TabContent = ({ title, desc, bullets, imgSrc, imgAlt }:{ title: string, desc: string, bullets: Array<string>, imgSrc: string, imgAlt: string }) => (
+    <div className="flex flex-col lg:flex-row items-center gap-12"> 
+    <div className="lg:w-1/2"> 
+    <h3 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+      {title}
+    </h3> 
+    <p className="text-gray-700 dark:text-gray-300 text-lg mb-6">{desc}</p> 
+    <ul className="space-y-3 text-gray-700 dark:text-gray-200 font-medium"> 
+      {bullets.map((point, index) => ( <li key={index} className="flex items-start"> 
+        <span className="mr-2 text-green-500">✔</span> 
+        {point.replace("✔ ", "")} </li> ))} </ul> 
+        </div> <div className="lg:w-1/2 text-center"> 
+        <img src={imgSrc} alt={imgAlt} className="rounded-xl shadow-lg w-full max-w-md mx-auto" /> 
+        </div> 
+        </div> );
+
   useEffect(() => {
+    AOS.init();
+
     const clientInterval = setInterval(() => {
       setCurrentClient((prev) => (prev + 1) % clientLogos.length);
     }, 3000); // Adjust interval as needed
@@ -40,138 +58,89 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="index-page">   
+    <div  className="index-page">   
       <main className="main">
 
         {/* Hero Section */}
-        <section id="hero" className="hero section">
+        <section id="hero" className="relative overflow-hidden bg-gray-900 text-white min-h-screen flex items-center justify-center"> {/* Background Image */} <img src="assets/img/hero-bg.jpg" alt="Hero Background" className="absolute inset-0 w-full h-full object-cover opacity-20" />
+{/* Overlay */}
 
-        <img src="assets/img/hero-bg.jpg" alt="" data-aos="fade-in" />
+<div className="absolute inset-0 bg-gray-900 bg-opacity-70"></div>
+{/* Hero Content */}
 
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-6">
-                <h2 data-aos="fade-up" data-aos-delay="100">Bettter investing experience with Binary Bloom</h2>
-                <p data-aos="fade-up" data-aos-delay="200">We are team of renouned investors changing the dynamics of investing</p>
-                <div className="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-                  <Link to="/register" className="btn-get-started">Get Started</Link>
-                  <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" className="glightbox btn-watch-video d-flex align-items-center"><i className="bi bi-play-circle"></i><span>Watch Video</span></a>
-                </div>
+<div className="relative z-10 container mx-auto px-6 py-24"> <div className="max-w-2xl mx-auto text-center"> <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-6" data-aos="fade-up" data-aos-delay="100"> Better Investing Experience with <span className="text-blue-500">Binary Bloom</span> </h1> <p className="text-lg text-gray-300 mb-8" data-aos="fade-up" data-aos-delay="200"> We are a team of renowned investors changing the dynamics of investing. </p>
 
-              </div>
-            </div>
-          </div>
-
-        </section>
+  <div className="flex flex-col sm:flex-row justify-center items-center gap-4" data-aos="fade-up" data-aos-delay="300">
+    <Link
+      to="/register"
+      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition"
+    >
+      Get Started
+    </Link>
+  </div>
+</div>
+</div> </section>
         {/* /Hero Section */}
 
               {/* Tabs Section */}
-    <section id="about" className="py-16 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center mb-10" data-aos="fade-up" data-aos-delay="100">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              className={`flex flex-col items-center w-1/2 sm:w-1/4 px-4 py-2 border-b-4 transition-colors duration-200 ${
-                activeTab === tab.id ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500"
-              }`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <i className={`bi ${tab.icon} text-2xl mb-2`}></i>
-              <h4 className="text-sm sm:text-base font-semibold">{tab.title}</h4>
-            </button>
-          ))}
-        </div>
-
-        {/* Tabs content */}
-        <div className="tab-content" data-aos="fade-up" data-aos-delay="200">
-          {activeTab === "tabs-tab-1" && (
-            <div className="tab-pane active" id="tabs-tab-1">
-            <div className="flex flex-col lg:flex-row items-center gap-10">
-              <div className="lg:w-1/2">
-                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Revolutionizing Digital Finance</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
-                  We offer secure, high-yield investment opportunities in digital assets. Our platform simplifies crypto
-                  investments for both beginners and seasoned traders.
-                </p>
-                <ul className="space-y-2 text-gray-700 dark:text-gray-200">
-                  <li>✔ Industry-leading security protocols</li>
-                  <li>✔ Real-time portfolio tracking</li>
-                  <li>✔ Access to top-performing digital currencies</li>
-                </ul>
-              </div>
-              <div className="lg:w-1/2 text-center">
-                <img src="assets/img/working-1.jpg" alt="Crypto Investment" className="rounded-lg shadow-lg" />
-              </div>
-            </div>
-          </div>
-
-          )}
-          {activeTab === "tabs-tab-2" && (
-             <div className="tab-pane" id="tabs-tab-2">
-             <div className="flex flex-col lg:flex-row items-center gap-10">
-               <div className="lg:w-1/2">
-                 <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Growing Futures with Agriculture</h3>
-                 <p className="text-gray-600 dark:text-gray-300 mb-4">
-                   Invest in sustainable farming and agritech ventures that power communities and feed the future.
-                 </p>
-                 <ul className="space-y-2 text-gray-700 dark:text-gray-200">
-                   <li>✔ Eco-friendly farming initiatives</li>
-                   <li>✔ Direct farm-to-market supply chains</li>
-                   <li>✔ Measurable social and financial impact</li>
-                 </ul>
-               </div>
-               <div className="lg:w-1/2 text-center">
-                 <img src="assets/img/working-2.jpg" alt="Agriculture Sector" className="rounded-lg shadow-lg" />
-               </div>
-             </div>
-           </div>
-          )}
-          {activeTab === "tabs-tab-3" && (
-            <div className="tab-pane" id="tabs-tab-3">
-            <div className="flex flex-col lg:flex-row items-center gap-10">
-              <div className="lg:w-1/2">
-                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Transforming Real Estate Access</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
-                  We provide innovative real estate investment models, allowing clients to own, lease, or invest in
-                  high-potential properties.
-                </p>
-                <ul className="space-y-2 text-gray-700 dark:text-gray-200">
-                  <li>✔ Digitally managed property portfolios</li>
-                  <li>✔ Transparent returns & flexible entry points</li>
-                  <li>✔ Urban and rural investment options</li>
-                </ul>
-              </div>
-              <div className="lg:w-1/2 text-center">
-                <img src="assets/img/working-3.jpg" alt="Real Estate Solutions" className="rounded-lg shadow-lg" />
-              </div>
-            </div>
-          </div>
-          )}
-          {activeTab === "tabs-tab-4" && (
-              <div className="tab-pane" id="tabs-tab-4">
-              <div className="flex flex-col lg:flex-row items-center gap-10">
-                <div className="lg:w-1/2">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Smart Integration of Opportunities</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Our platform harmonizes investment in crypto, agriculture, and real estate—making diversification simple and
-                    seamless.
-                  </p>
-                  <ul className="space-y-2 text-gray-700 dark:text-gray-200">
-                    <li>✔ Unified dashboard for all sectors</li>
-                    <li>✔ AI-driven analytics & reporting</li>
-                    <li>✔ Diversification with a single platform</li>
-                  </ul>
-                </div>
-                <div className="lg:w-1/2 text-center">
-                  <img src="assets/img/working-4.jpg" alt="Integrated Investment" className="rounded-lg shadow-lg" />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
+<section id="about" className="py-20 bg-gray-50 dark:bg-gray-900"> <div className="container mx-auto px-4"> {/* Tabs Navigation */} <div className="flex flex-wrap justify-center mb-12" data-aos="fade-up" data-aos-delay="100"> {tabs.map((tab) => ( <button key={tab.id} className={`flex flex-col items-center justify-center w-1/2 sm:w-1/4 px-6 py-4 border-b-4 transition-all duration-300 ease-in-out hover:text-blue-600 ${ activeTab === tab.id ? "border-blue-600 text-blue-600 bg-white dark:bg-gray-800 shadow" : "border-transparent text-gray-500 dark:text-gray-400" }`} onClick={() => setActiveTab(tab.id)} > <i className={`bi ${tab.icon} text-2xl mb-2`}></i> <span className="text-sm sm:text-base font-medium">{tab.title}</span> </button> ))} </div>
+{/* Tab Content */}
+<div className="tab-content" data-aos="fade-up" data-aos-delay="200">
+  {/* Reusable Content Component */}
+  {activeTab === "tabs-tab-1" && (
+    <TabContent
+      title="Revolutionizing Digital Finance"
+      desc="We offer secure, high-yield investment opportunities in digital assets. Our platform simplifies crypto investments for both beginners and seasoned traders."
+      bullets={[
+        "✔ Industry-leading security protocols",
+        "✔ Real-time portfolio tracking",
+        "✔ Access to top-performing digital currencies",
+      ]}
+      imgSrc="digital-finance.jpg"
+      imgAlt="Crypto Investment"
+    />
+  )}
+  {activeTab === "tabs-tab-2" && (
+    <TabContent
+      title="Growing Futures with Agriculture"
+      desc="Invest in sustainable farming and agritech ventures that power communities and feed the future."
+      bullets={[
+        "✔ Eco-friendly farming initiatives",
+        "✔ Direct farm-to-market supply chains",
+        "✔ Measurable social and financial impact",
+      ]}
+      imgSrc="agric-image.jpg"
+      imgAlt="Agriculture Sector"
+    />
+  )}
+  {activeTab === "tabs-tab-3" && (
+    <TabContent
+      title="Transforming Real Estate Access"
+      desc="We provide innovative real estate investment models, allowing clients to own, lease, or invest in high-potential properties."
+      bullets={[
+        "✔ Digitally managed property portfolios",
+        "✔ Transparent returns & flexible entry points",
+        "✔ Urban and rural investment options",
+      ]}
+      imgSrc="real-estate.jpg"
+      imgAlt="Real Estate Solutions"
+    />
+  )}
+  {activeTab === "tabs-tab-4" && (
+    <TabContent
+      title="Smart Integration of Opportunities"
+      desc="Our platform harmonizes investment in crypto, agriculture, and real estate—making diversification simple and seamless."
+      bullets={[
+        "✔ Unified dashboard for all sectors",
+        "✔ AI-driven analytics & reporting",
+        "✔ Diversification with a single platform",
+      ]}
+      imgSrc="smart-investment.jpg"
+      imgAlt="Integrated Investment"
+    />
+  )}
+</div>
+</div> </section>
 
 
         {/* /Tabs Section */}
@@ -188,7 +157,7 @@ const Home = () => {
 <section id="pricing" className="py-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white"> 
       {/* Section Title */} 
       <div className="container mx-auto px-4 text-center mb-16" data-aos="fade-up"> 
-        <h2 className="text-red-600 text-4xl font-extrabold mb-4">Choose Your Investment Plan</h2> 
+        <h2 className="text-4xl font-extrabold mb-4">Choose Your Investment Plan</h2> 
         <p className="text-lg text-gray-300 max-w-2xl mx-auto"> Select a plan that fits your goals. Whether you're a beginner or a seasoned investor, we have the perfect option to grow your wealth. </p> </div>
 {/* Plans */}
 
@@ -279,31 +248,31 @@ const Home = () => {
         {
           name: "Saul Goodman",
           title: "Crypto Trader",
-          image: "assets/img/testimonials/testimonials-1.jpg",
+          image: "/testimonials-1.jpg",
           feedback: "I’ve seen consistent returns since I started. The platform is intuitive, secure, and transparent. Highly recommend to any serious investor.",
         },
         {
           name: "Sara Wilsson",
           title: "Real Estate Investor",
-          image: "assets/img/testimonials/testimonials-2.jpg",
+          image: "/testimonials-2.jpg",
           feedback: "The real estate investment options here are top-tier. I feel confident knowing my money is working for me with a trustworthy company.",
         },
         {
           name: "Jena Karlis",
           title: "Agritech Entrepreneur",
-          image: "assets/img/testimonials/testimonials-3.jpg",
+          image: "/testimonials-3.jpg",
           feedback: "As someone in the agriculture industry, I’m impressed with the investment opportunities that support sustainable farming. Excellent service.",
         },
         {
           name: "Matt Brandon",
           title: "Full-time Investor",
-          image: "assets/img/testimonials/testimonials-4.jpg",
+          image: "/testimonials-4.jpg",
           feedback: "I’ve diversified my portfolio across crypto, agriculture, and real estate using this platform. The returns are fantastic and the support team is always helpful.",
         },
         {
           name: "John Larson",
           title: "Tech Entrepreneur",
-          image: "assets/img/testimonials/testimonials-5.jpg",
+          image: "/testimonials-5.jpg",
           feedback: "Investing with this platform has been a game-changer. The referral bonuses and daily ROIs are unmatched in the industry.",
         },
       ].map((testimonial, index) => (
@@ -381,209 +350,118 @@ const Home = () => {
         {/* /Faq Section */}
 
         {/* Team Section */}
-        <section id="team" className="team section section-bg dark-background">
-
-{/* Section Title */}
-<div className="container section-title" data-aos="fade-up">
-  <h2>Meet Our Experts</h2>
-  <p>Our dedicated leadership team brings decades of experience in finance, crypto, agriculture, and real estate investments. Together, we drive innovation and trust for our global clientele.</p>
-</div>{/* End Section Title */}
-
-<div className="container">
-  <div className="row gy-4">
-
-    <div className="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
-      <div className="team-member">
-        <div className="member-img">
-          <img src="assets/img/team/team-1.jpg" className="img-fluid" alt="Walter White" />
-          <div className="social">
-            <a href="#"><i className="bi bi-twitter-x"></i></a>
-            <a href="#"><i className="bi bi-facebook"></i></a>
-            <a href="#"><i className="bi bi-instagram"></i></a>
-            <a href="#"><i className="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-        <div className="member-info">
-          <h4>Walter White</h4>
-          <span>Chief Executive Officer</span>
-          <p>With over 20 years in financial leadership, Walter ensures our strategic growth and investor confidence remain unmatched.</p>
-        </div>
-      </div>
-    </div>{/* End Team Member */}
-
-    <div className="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
-      <div className="team-member">
-        <div className="member-img">
-          <img src="assets/img/team/team-2.jpg" className="img-fluid" alt="Sarah Johnson" />
-          <div className="social">
-            <a href="#"><i className="bi bi-twitter-x"></i></a>
-            <a href="#"><i className="bi bi-facebook"></i></a>
-            <a href="#"><i className="bi bi-instagram"></i></a>
-            <a href="#"><i className="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-        <div className="member-info">
-          <h4>Sarah Johnson</h4>
-          <span>Chief Investment Officer</span>
-          <p>Sarah leads our investment strategies across crypto, agriculture, and real estate — delivering consistent ROI for clients worldwide.</p>
-        </div>
-      </div>
-    </div>{/* End Team Member */}
-
-    <div className="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
-      <div className="team-member">
-        <div className="member-img">
-          <img src="assets/img/team/team-3.jpg" className="img-fluid" alt="William Anderson" />
-          <div className="social">
-            <a href="#"><i className="bi bi-twitter-x"></i></a>
-            <a href="#"><i className="bi bi-facebook"></i></a>
-            <a href="#"><i className="bi bi-instagram"></i></a>
-            <a href="#"><i className="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-        <div className="member-info">
-          <h4>William Anderson</h4>
-          <span>Chief Technology Officer</span>
-          <p>From blockchain security to scalable fintech systems, William ensures our platform stays cutting-edge and investor-friendly.</p>
-        </div>
-      </div>
-    </div>{/* End Team Member */}
-
-    <div className="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
-      <div className="team-member">
-        <div className="member-img">
-          <img src="assets/img/team/team-4.jpg" className="img-fluid" alt="Amanda Jepson" />
-          <div className="social">
-            <a href="#"><i className="bi bi-twitter-x"></i></a>
-            <a href="#"><i className="bi bi-facebook"></i></a>
-            <a href="#"><i className="bi bi-instagram"></i></a>
-            <a href="#"><i className="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-        <div className="member-info">
-          <h4>Amanda Jepson</h4>
-          <span>Chief Financial Officer</span>
-          <p>Amanda oversees our financial planning and regulatory compliance — guaranteeing transparency and investor security.</p>
-        </div>
-      </div>
-    </div>{/* End Team Member */}
-
-  </div>
-</div>
-</section>
+<section id="team" className="bg-gray-100 dark:bg-gray-900 py-16"> 
+  <div className="container mx-auto px-4 text-center mb-12" data-aos="fade-up"> 
+    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Meet Our Experts</h2> 
+    <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"> Our dedicated leadership team brings decades of experience in finance, crypto, agriculture, and real estate investments. Together, we drive innovation and trust for our global clientele. </p> 
+    </div> 
+    <div className="container mx-auto px-4"> 
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" data-aos="fade-up" data-aos-delay="100"> 
+        {[ { name: "Walter White", role: "Chief Executive Officer", image: "/team-1.jpg", desc: "With over 20 years in financial leadership, Walter ensures our strategic growth and investor confidence remain unmatched.", }, 
+          { name: "Sarah Johnson", role: "Chief Investment Officer", image: "/team-2.jpg", desc: "Sarah leads our investment strategies across crypto, agriculture, and real estate — delivering consistent ROI for clients worldwide.", }, 
+          { name: "William Anderson", role: "Chief Technology Officer", image: "/team-3.jpg", desc: "From blockchain security to scalable fintech systems, William ensures our platform stays cutting-edge and investor-friendly.", }, ].map((member, index) => ( <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay={`${100 + index * 100}`}> <img src={member.image} alt={member.name} className="w-full h-60 object-cover" /> <div className="p-6 text-center"> <h4 className="text-xl font-semibold text-gray-900 dark:text-white">{member.name}</h4> <span className="text-sm text-indigo-500">{member.role}</span> <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm">{member.desc}</p> <div className="flex justify-center gap-4 mt-4 text-gray-500 dark:text-gray-400"> <a href="#"><i className="bi bi-twitter-x hover:text-indigo-500"></i></a> <a href="#"><i className="bi bi-facebook hover:text-indigo-500"></i></a> <a href="#"><i className="bi bi-instagram hover:text-indigo-500"></i></a> <a href="#"><i className="bi bi-linkedin hover:text-indigo-500"></i></a> </div> </div> </div> ))} </div> </div> </section>
 
         {/* /Team Section */}
 
               {/* Clients Section */}
-              <section id="clients" className="clients section">
-
-<div className="container" data-aos="fade-up" data-aos-delay="100">
-  {/* Section Title */}
-  <div className="section-title text-center mb-4">
-    <h2 className="text-black">Our Trusted Partners</h2>
-    <p className="text-muted">We proudly collaborate with industry-leading organizations across crypto, agriculture, and real estate.</p>
-  </div>
-
-  {/* Client Logo Slider */}
-  <div className="client-slide text-center">
-    <img 
-      src={clientLogos[currentClient]} 
-      alt={`Partner ${currentClient + 1} Logo`} 
-      className="client-logo img-fluid" 
-    />
-  </div>
-
-  {/* Pagination if needed */}
-  <div className="swiper-pagination mt-3"></div>
-</div>
-
-</section>
+              <section id="clients" className="py-16 bg-white dark:bg-gray-900"> <div className="container mx-auto px-4" data-aos="fade-up" data-aos-delay="100"> <div className="text-center mb-8"> <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Our Trusted Partners</h2> <p className="text-gray-500 dark:text-gray-400 mt-2"> We proudly collaborate with industry-leading organizations across crypto, agriculture, and real estate. </p> </div>
+                  <div className="flex justify-center items-center h-32">
+                    <img
+                      src={clientLogos[currentClient]}
+                      alt={`Partner ${currentClient + 1}`}
+                      className="max-h-20 object-contain transition duration-500 ease-in-out"
+                    />
+                  </div>
+              
+                  {/* Optional Pagination dots */}
+                  <div className="flex justify-center gap-2 mt-6">
+                    {clientLogos.map((_, index) => (
+                      <span
+                        key={index}
+                        className={`w-2 h-2 rounded-full ${index === currentClient ? 'bg-indigo-500' : 'bg-gray-300'} transition`}
+                      ></span>
+                    ))}
+                  </div>
+                </div>
+              </section>
 
               
               {/* /Clients Section */}
               
-        {/* Contact Section */}
-        <section id="contact" className="contact section">
-
-{/* Section Title */}
-<div className="container section-title" data-aos="fade-up">
-  <h2>Contact Us</h2>
-  <p>Have questions about our investment plans or services? Reach out to our team — we’re here to help you grow your future.</p>
-</div>{/* End Section Title */}
-
-<div className="container" data-aos="fade-up" data-aos-delay="100">
-  <div className="row gy-4">
-    
-    {/* Contact Info */}
-    <div className="col-lg-6">
-      <div className="row gy-4">
-
-        <div className="col-lg-12">
-          <div className="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
-            <i className="bi bi-geo-alt"></i>
-            <h3>Our Address</h3>
-            <p>Suite 108, Finance District, New York, NY 10001</p>
-          </div>
-        </div>{/* End Info Item */}
-
-        <div className="col-md-6">
-          <div className="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
-            <i className="bi bi-telephone"></i>
-            <h3>Call Us</h3>
-            <p>+1 (800) 555-8899</p>
-          </div>
-        </div>{/* End Info Item */}
-
-        <div className="col-md-6">
-          <div className="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
-            <i className="bi bi-envelope"></i>
-            <h3>Email Us</h3>
-            <p>support@yourcompany.com</p>
-          </div>
-        </div>{/* End Info Item */}
-
-      </div>
+<section id="contact" className="bg-white dark:bg-gray-900 py-16"> <div className="container mx-auto px-4" data-aos="fade-up"> {/* Section Title */} <div className="text-center mb-12"> <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Contact Us</h2> <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"> Have questions about our investment plans or services? Reach out to our team — we’re here to help you grow your future. </p> </div>
+<div className="flex flex-col lg:flex-row gap-12" data-aos="fade-up" data-aos-delay="100">
+  {/* Contact Info */}
+  <div className="w-full lg:w-1/2 space-y-8">
+    <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
+      <i className="fa-solid fa-location-dot text-3xl text-indigo-500 mb-2"></i>
+      <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Our Address</h3>
+      <p className="text-gray-600 dark:text-gray-300">Suite 108, Finance District, New York, NY 10001</p>
     </div>
 
-    {/* Contact Form */}
-    <div className="col-lg-6">
-      <form action="forms/contact.php" method="post" className="php-email-form" data-aos="fade-up" data-aos-delay="500">
-        <div className="row gy-4">
+    <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
+      <i className="fa-solid fa-phone text-3xl text-indigo-500 mb-2"></i>
+      <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Call Us</h3>
+      <p className="text-gray-600 dark:text-gray-300">+1 (800) 555-8899</p>
+    </div>
 
-          <div className="col-md-6">
-            <input type="text" name="name" className="form-control" placeholder="Your Name" required />
-          </div>
+    <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="400">
+      <i className="fa-solid fa-envelope text-3xl text-indigo-500 mb-2"></i>
+      <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Email Us</h3>
+      <p className="text-gray-600 dark:text-gray-300">support@yourcompany.com</p>
+    </div>
+  </div>
 
-          <div className="col-md-6">
-            <input type="email" className="form-control" name="email" placeholder="Your Email" required />
-          </div>
+  {/* Contact Form */}
+  <div className="w-full lg:w-1/2">
+    <form action="forms/contact.php" method="post" className="space-y-6" data-aos="fade-up" data-aos-delay="500">
+      <div className="flex flex-col md:flex-row gap-4">
+        <input
+          type="text"
+          name="name"
+          className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
+          placeholder="Your Name"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
+          placeholder="Your Email"
+          required
+        />
+      </div>
+      <input
+        type="text"
+        name="subject"
+        className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
+        placeholder="Subject"
+        required
+      />
+      <textarea
+        name="message"
+        rows={5}
+        className="w-full p-3 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white"
+        placeholder="Your Message"
+        required
+      ></textarea>
 
-          <div className="col-md-12">
-            <input type="text" className="form-control" name="subject" placeholder="Subject" required />
-          </div>
+      {/* Feedback Messages */}
+      <div className="text-center">
+        <div className="loading hidden text-gray-500">Loading...</div>
+        <div className="error-message hidden text-red-500">There was an error sending your message.</div>
+        <div className="sent-message hidden text-green-500">Your message has been sent. Thank you!</div>
 
-          <div className="col-md-12">
-            <textarea className="form-control" name="message" rows={4} placeholder="Your Message" required></textarea>
-          </div>
-
-          <div className="col-md-12 text-center">
-            <div className="loading">Loading</div>
-            <div className="error-message"></div>
-            <div className="sent-message">Your message has been sent. Thank you for reaching out!</div>
-
-            <button type="submit">Send Message</button>
-          </div>
-
-        </div>
-      </form>
-    </div>{/* End Contact Form */}
-
+        <button
+          type="submit"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-md transition"
+        >
+          Send Message
+        </button>
+      </div>
+    </form>
   </div>
 </div>
-</section>
-
-        {/* /Contact Section */}
-
+</div> </section>
       </main>
     </div>
   )

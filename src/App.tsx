@@ -5,8 +5,6 @@ import Register from './pages/Register';
 import Dashboard from "./pages/user/Dashboard";
 import Layout from "./pages/Layout";
 import DashboardLayout from "./pages/user/Layout";
-import Contact from "./pages/Contact";
-import Products from "./pages/Products";
 import Deposit from "./pages/user/Deposit";
 import Profile from "./pages/user/Profile";
 import Referral from "./pages/user/Referral";
@@ -28,11 +26,7 @@ const App = () => {
 
   return (
   <div>
-      {/* Page Routes */}
       <Routes>        
-        <Route path="/login" element={<Layout><Login /></Layout>} />
-        <Route path="/register" element={<Layout><Register /></Layout>} /> 
-
         {/* Protected Route for Users */}
         <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard/>} />
@@ -50,10 +44,12 @@ const App = () => {
         </Route>
 
         {/* Unprotected Routes for public */}
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/contact" element={<Layout><Contact /></Layout>} />
-        <Route path="/product" element={<Layout><Products /></Layout>} />
-        <Route path="/logout" element={<Layout><Logout /></Layout>} />
+        <Route element={<Layout />} >
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Home />} />
+        </Route>
+        <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
     </div>

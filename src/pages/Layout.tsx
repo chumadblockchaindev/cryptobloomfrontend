@@ -1,100 +1,99 @@
-import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import Header from '@/components/Navbar';
+import { Outlet } from 'react-router-dom';
 
-export interface LayoutProps {  // Define the props for the Layout component
-  children: React.ReactNode;
-}
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout = () => {
     const { isAuthenticated } = useAuth();
    
 
   return (
-    <div>
+    <div data-aos="fade-up">
       <Header isAuthenticated={isAuthenticated} />
       <main>
-        {children}
+        <Outlet />
       </main>
-      <footer id="footer" className="footer dark-background text-light pt-5 pb-4">
-  <div className="container footer-top">
-    <div className="row gy-4">
+      <footer className="bg-gray-900 text-gray-200 pt-12 pb-8">
+  <div data-aos="fade-up" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
       {/* About Section */}
-      <div className="col-lg-4 col-md-6 footer-about">
-        <a href="/" className="logo d-flex align-items-center mb-3">
-          <h2 className="sitename m-0">Binary Bloom</h2>
-        </a>
-        <div className="footer-contact">
-          <p>📍 A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p className="mt-3">
-            <strong>📞 Phone:</strong> <span>+1 5589 55488 55</span>
-          </p>
-          <p>
-            <strong>📧 Email:</strong> <span>info@example.com</span>
-          </p>
+      <div data-aos="fade-up">
+        <h2 className="text-2xl font-semibold text-white mb-4">Binary Bloom</h2>
+        <p className="text-sm text-gray-400 mb-4">
+          Empowering your investments across crypto, agriculture, and real estate with intelligent strategies and trusted support.
+        </p>
+        <div data-aos="fade-up" className="space-y-1 text-sm text-gray-400">
+          <p><i className="fa-solid fa-location-dot text-indigo-400 mr-2"></i> A108 Adam Street, New York, NY</p>
+          <p><i className="fa-solid fa-phone text-indigo-400 mr-2"></i> +1 5589 55488 55</p>
+          <p><i className="fa-solid fa-envelope text-indigo-400 mr-2"></i> info@example.com</p>
         </div>
-        <div className="social-links d-flex mt-4 gap-3">
-          <a href="#"><i className="bi bi-twitter-x"></i></a>
-          <a href="#"><i className="bi bi-facebook"></i></a>
-          <a href="#"><i className="bi bi-instagram"></i></a>
-          <a href="#"><i className="bi bi-linkedin"></i></a>
+        <div data-aos="fade-up" className="flex space-x-4 mt-4 text-xl text-white">
+          <a href="#" className="hover:text-indigo-400"><i className="fa-brands fa-x-twitter"></i></a>
+          <a href="#" className="hover:text-indigo-400"><i className="fa-brands fa-facebook-f"></i></a>
+          <a href="#" className="hover:text-indigo-400"><i className="fa-brands fa-instagram"></i></a>
+          <a href="#" className="hover:text-indigo-400"><i className="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
 
-      {/* Useful Links */}
-      <div className="col-lg-2 col-md-3 footer-links">
-        <h4>Useful Links</h4>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/#about">About Us</a></li>
-          <li><a href="/#services">Services</a></li>
-          <li><a href="/terms">Terms of Service</a></li>
-          <li><a href="/privacypolicy">Privacy Policy</a></li>
+      {/* Quick Links */}
+      <div data-aos="fade-up">
+        <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
+        <ul className="space-y-2 text-sm">
+          <li><a href="/" className="hover:text-indigo-400">Home</a></li>
+          <li><a href="/#about" className="hover:text-indigo-400">About Us</a></li>
+          <li><a href="/#services" className="hover:text-indigo-400">Services</a></li>
+          <li><a href="/terms" className="hover:text-indigo-400">Terms of Service</a></li>
+          <li><a href="/privacypolicy" className="hover:text-indigo-400">Privacy Policy</a></li>
         </ul>
       </div>
 
-      {/* Services Links */}
-      <div className="col-lg-2 col-md-3 footer-links">
-        <h4>Our Services</h4>
-        <ul>
-          <li><a href="#">Crypto Investment</a></li>
-          <li><a href="#">Agricultural Funding</a></li>
-          <li><a href="#">Real Estate</a></li>
-          <li><a href="#">Market Analysis</a></li>
-          <li><a href="#">Consultancy</a></li>
+      {/* Services */}
+      <div data-aos="fade-up">
+        <h3 className="text-lg font-semibold text-white mb-4">Our Services</h3>
+        <ul className="space-y-2 text-sm">
+          <li><a href="#" className="hover:text-indigo-400">Crypto Investment</a></li>
+          <li><a href="#" className="hover:text-indigo-400">Agricultural Funding</a></li>
+          <li><a href="#" className="hover:text-indigo-400">Real Estate</a></li>
+          <li><a href="#" className="hover:text-indigo-400">Market Analysis</a></li>
+          <li><a href="#" className="hover:text-indigo-400">Consultancy</a></li>
         </ul>
       </div>
 
       {/* Newsletter */}
-      <div className="col-lg-4 col-md-12 footer-newsletter">
-        <h4>Join Our Newsletter</h4>
-        <p>Subscribe to receive updates and insights from the Binary Bloom team.</p>
-        <form action="forms/newsletter.php" method="post" className="php-email-form">
-          <div className="newsletter-form d-flex">
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              className="form-control me-2"
-            />
-            <input type="submit" value="Subscribe" className="btn btn-primary" />
-          </div>
-          <div className="loading">Loading</div>
-          <div className="error-message"></div>
-          <div className="sent-message">Your subscription request has been sent. Thank you!</div>
+      <div data-aos="fade-up">
+        <h3 className="text-lg font-semibold text-white mb-4">Join Our Newsletter</h3>
+        <p className="text-sm text-gray-400 mb-4">
+          Stay informed with the latest updates and insights from our experts.
+        </p>
+        <form action="forms/newsletter.php" method="post" className="flex flex-col space-y-3">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            className="px-4 py-2 rounded bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          <button
+            type="submit"
+            className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded transition"
+          >
+            Subscribe
+          </button>
+          <div data-aos="fade-up" className="loading text-sm text-gray-400">Loading...</div>
+          <div data-aos="fade-up" className="error-message text-sm text-red-500"></div>
+          <div data-aos="fade-up" className="sent-message text-sm text-green-500">Thank you for subscribing!</div>
         </form>
       </div>
     </div>
-  </div>
 
-  <div className="container text-center mt-5">
-    <p>
-      © {new Date().getFullYear()} <strong className="sitename">Binary Bloom</strong>. All Rights Reserved
-    </p>
-    <div className="credits">
-      Designed by <a href="https://bootstrapmade.com/">Chumatech</a>
+    {/* Footer Bottom */}
+    <div className="mt-12 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+      <p>
+        © {new Date().getFullYear()} <span className="text-white font-semibold">Binary Bloom</span>. All rights reserved.
+      </p>
+      <p className="mt-1">
+        Designed by <a href="https://bootstrapmade.com/" className="text-indigo-400 hover:underline">Chumatech</a>
+      </p>
     </div>
   </div>
 </footer>

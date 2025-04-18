@@ -4,113 +4,149 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
-  const[loading, setLoading] = useState(false)
-  const location = useLocation(); 
+  const location = useLocation();
   const [referral, setReferral] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorModal, setErrorModal] = useState<string | null>(null);
 
-  useEffect(() => { 
-    const params = new URLSearchParams(location.search); 
-    const refCode = params.get("ref"); 
-    if (refCode) { setReferral(refCode); 
-    } }, [location.search]);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const refCode = params.get("ref");
+    if (refCode) setReferral(refCode);
+  }, [location.search]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
     const formObject = Object.fromEntries(formData.entries());
-    setLoading(true)
-    localStorage.clear()
+    setLoading(true);
+    localStorage.clear();
+
     try {
-      console.log(formObject)
-      const res = await api.post('/register/', formObject)
-      if (res.status === 201){
+      const res = await api.post("/register/", formObject);
+      if (res.status === 201) {
         localStorage.setItem("ACCESSTOKEN", res.data.access);
         localStorage.setItem("REFRESHTOKEN", res.data.refresh);
-        navigate("/login")
+        navigate("/login");
       }
-    } catch (error) {
-      console.error(error)
-      setLoading(false)
+    } catch (error: any) {
+      const errMsg = error?.response?.data?.detail || "Something went wrong. Please try again.";
+      setErrorModal(errMsg);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <section className="bg-light py-3 py-md-5 py-xl-8">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-            <div className="mb-5">
-              <h4 className="text-center mb-4">Registration</h4>
-            </div>
-            <div className="card border border-light-subtle rounded-4">
-              <div className="card-body p-3 p-md-4 p-xl-5">
-                <form onSubmit={handleSubmit}>
-                  <div className="row gy-3 overflow-hidden">
-                    <div className="col-12">
-                      <div className="form-floating mb-3">
-                        <input type="text" className="form-control" name="full_name" id="firstName" placeholder="First Name" required />
-                        <label htmlFor="firstName" className="form-label">Full Name</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-floating mb-3">
-                        <input type="text" className="form-control" name="username" id="lastName" placeholder="First Name" required />
-                        <label htmlFor="lastName" className="form-label">Username</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-floating mb-3">
-                        <input type="email" className="form-control" name="email" id="email" placeholder="name@example.com" required />
-                        <label htmlFor="email" className="form-label">Email</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-floating mb-3">
-                        <input type="password" className="form-control" name="password" id="password" placeholder="Password" required />
-                        <label htmlFor="password" className="form-label">Password</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-floating mb-3">
-                        <input type="text" name="referral" value={referral} className="form-control" id="referral" placeholder="First Name" />
-                        <label htmlFor="lastName" className="form-label">Refferal</label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" id="iAgree" required />
-                        <label className="form-check-label text-secondary" htmlFor="iAgree">
-                          I agree to the <a href="#!" className="link-primary text-decoration-none">terms and conditions</a>
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-12">
-                      <div className="d-grid">
-                        <button className="btn btn-primary btn-lg" type="submit" disabled={loading}>
-                        {loading ? (<>
-                          <div role="space-x-2">
-                              <svg aria-hidden="true" className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                              </svg>
-                          </div>
-                          </>) : "Sign up"}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div className="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-4">
-              <p className="m-0 text-secondary text-center">Already have an account? <a href="login" className="link-primary text-decoration-none">Sign in</a></p>
-            </div>
+    <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+      {/* Error Modal */}
+      {errorModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-6 shadow-md w-full max-w-sm">
+            <h2 className="text-lg font-semibold text-red-600 mb-2">Error</h2>
+            <p className="text-gray-700 mb-4">{errorModal}</p>
+            <button
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 w-full"
+              onClick={() => setErrorModal(null)}
+            >
+              Close
+            </button>
           </div>
         </div>
+      )}
+
+      <div className="w-full max-w-md animate-fade-in-up bg-white p-8 rounded-xl shadow-xl">
+        <h2 className="text-center text-2xl font-bold text-gray-800 mb-6">
+          Create an Account
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="text"
+            name="full_name"
+            placeholder="Full Name"
+            required
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            name="referral"
+            value={referral}
+            onChange={(e) => setReferral(e.target.value)}
+            placeholder="Referral (optional)"
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <div className="flex items-start">
+            <input
+              type="checkbox"
+              required
+              className="mr-2 mt-1"
+              id="terms"
+            />
+            <label htmlFor="terms" className="text-sm text-gray-600">
+              I agree to the <a href="#" className="text-blue-500">terms and conditions</a>.
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300"
+          >
+            {loading && (
+              <svg
+                className="w-5 h-5 animate-spin text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"
+                />
+              </svg>
+            )}
+            {loading ? "Creating Account..." : "Sign Up"}
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline">
+            Log in
+          </a>
+        </p>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
