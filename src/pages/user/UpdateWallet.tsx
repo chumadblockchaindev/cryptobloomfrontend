@@ -41,54 +41,76 @@ const UpdateWallet = ({ walletData }: { walletData: Wallets }) => {
       return <div className="text-center py-10">Loading wallets...</div>;
     }
 
-  return (
-    <div>
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto mt-8 bg-white p-6 rounded shadow space-y-4"> 
-    <h2 className="text-lg font-semibold">Update Crypto Wallets</h2>
-    <div>
-      <label htmlFor="wallet_btc">BTC Address</label>
-      <input
-      type="text"
-      name="wallet_btc"
-      placeholder="BTC Wallet Address"
-      value={wallets.wallet_btc}
-      onChange={handleChange}
-      className="w-full p-2 border rounded"
-    />
-    </div>
- 
-    <div>
-      <label htmlFor="wallet_eth">ETH Address</label>
-      <input
-      type="text"
-      name="wallet_eth"
-      placeholder="ETH Wallet Address"
-      value={wallets.wallet_eth}
-      onChange={handleChange}
-      className="w-full p-2 border rounded"
-    />
-    </div>
-  
-    <div>
-      <label htmlFor="wallet_usdt">USDT Address</label>
-      <input
-      type="text"
-      name="wallet_usdt"
-      placeholder="USDT Wallet Address"
-      value={wallets.wallet_usdt}
-      onChange={handleChange}
-      className="w-full p-2 border rounded"
-    />
-    </div>
-  
-  <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-    Save Wallets
-  </button>
-
-  {message && <p className="text-sm text-gray-600">{message}</p>}
-</form>
-    </div>
-  )
+    return (
+      <div>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-gray-50 p-6 rounded-xl shadow-lg space-y-6"
+        >
+          <h2 className="text-xl font-semibold text-indigo-700 mb-2">Update Crypto Wallets</h2>
+    
+          <div className="space-y-2">
+            <label htmlFor="wallet_btc" className="block text-gray-700 font-medium">
+              BTC Address
+            </label>
+            <input
+              type="text"
+              name="wallet_btc"
+              placeholder="BTC Wallet Address"
+              value={wallets.wallet_btc}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 outline-none"
+            />
+          </div>
+    
+          <div className="space-y-2">
+            <label htmlFor="wallet_eth" className="block text-gray-700 font-medium">
+              ETH Address
+            </label>
+            <input
+              type="text"
+              name="wallet_eth"
+              placeholder="ETH Wallet Address"
+              value={wallets.wallet_eth}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 outline-none"
+            />
+          </div>
+    
+          <div className="space-y-2">
+            <label htmlFor="wallet_usdt" className="block text-gray-700 font-medium">
+              USDT Address
+            </label>
+            <input
+              type="text"
+              name="wallet_usdt"
+              placeholder="USDT Wallet Address"
+              value={wallets.wallet_usdt}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 outline-none"
+            />
+          </div>
+    
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 transition-all text-white font-semibold py-3 rounded-md shadow-md"
+          >
+            Save Wallets
+          </button>
+    
+          {message && (
+            <p
+              className={`text-sm text-center font-medium ${
+                message.includes("✅") ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+        </form>
+      </div>
+    );
+    
 }
 
 export default UpdateWallet

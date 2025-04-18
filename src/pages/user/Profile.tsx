@@ -73,60 +73,66 @@ const ProfileUpdate = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4 text-center">Update Profile</h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="full_name"
-          placeholder="Full Name"
-          value={formData.full_name}
-          onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
-        />
-
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
-        />
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="New Password (optional)"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full border px-4 py-2 rounded"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Update Profile
-        </button>
-
-        {message && <p className="text-green-600 text-center">{message}</p>}
-        {error && <p className="text-red-600 text-center">{error}</p>}
-      </form>
-      <h2>Payment Settings</h2>
-      <UpdateWallet walletData={walletData} />
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50 py-10 px-4">
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-2xl">
+        <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">Update Profile</h2>
+  
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="text"
+            name="full_name"
+            placeholder="Full Name"
+            value={formData.full_name}
+            onChange={handleChange}
+            className="w-full border border-gray-300 px-4 py-3 rounded-md focus:ring-2 focus:ring-indigo-300 outline-none"
+          />
+  
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+            className="w-full border border-gray-300 px-4 py-3 rounded-md focus:ring-2 focus:ring-indigo-300 outline-none"
+          />
+  
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full border border-gray-300 px-4 py-3 rounded-md focus:ring-2 focus:ring-indigo-300 outline-none"
+          />
+  
+          <input
+            type="password"
+            name="password"
+            placeholder="New Password (optional)"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full border border-gray-300 px-4 py-3 rounded-md focus:ring-2 focus:ring-indigo-300 outline-none"
+          />
+  
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 transition-all text-white font-semibold py-3 rounded-md shadow-md"
+          >
+            Update Profile
+          </button>
+  
+          {message && <p className="text-green-600 text-center font-medium">{message}</p>}
+          {error && <p className="text-red-600 text-center font-medium">{error}</p>}
+        </form>
+  
+        <div className="border-t mt-8 pt-6">
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Payment Settings</h3>
+          <UpdateWallet walletData={walletData} />
+        </div>
+      </div>
     </div>
   );
+  
 };
 
 export default ProfileUpdate;
