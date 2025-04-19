@@ -1,7 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Layout from "./Layout";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
