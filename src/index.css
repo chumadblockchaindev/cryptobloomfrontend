@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
-
 @import 'swiper/css';
 @import 'swiper/css/pagination';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

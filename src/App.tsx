@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -25,7 +25,7 @@ const App = () => {
   }
 
   return (
-  <div>
+  <BrowserRouter>
       <Routes>        
         {/* Protected Route for Users */}
         <Route element={<DashboardLayout />}>
@@ -44,15 +44,15 @@ const App = () => {
         </Route>
 
         {/* Unprotected Routes for public */}
-        <Route element={<Layout />} >
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Home />} />
+        <Route path="/" element={<Layout />} >
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
         </Route>
         <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>
-    </div>
+    </BrowserRouter>
   )
 }
 

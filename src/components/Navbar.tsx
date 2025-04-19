@@ -7,14 +7,19 @@ const Header = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [isScrolled, setIsScrolled] = useState(false); 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-useEffect(() => { const handleScroll = () => { 
-  setIsScrolled(window.scrollY > 50); };
+useEffect(() => { 
+  const handleScroll = () => { 
+  setIsScrolled(window.scrollY > 50); 
+};
    window.addEventListener("scroll", handleScroll); 
    return () => window.removeEventListener("scroll", handleScroll);
    }, []);
 
 return ( 
-<header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${ isScrolled ? "bg-transparent shadow-md" : "bg-gray-900"}`} > <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"> {/* Logo */} <Link to="/" className="text-white font-bold text-xl flex items-center gap-1"> Binary Bloom <span className="text-blue-500 text-2xl">.</span> </Link>
+<header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${ isScrolled ? "bg-black shadow-md" : "bg-gray-900"}`} > 
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"> 
+    {/* Logo */} 
+    <Link to="/" className="text-white font-bold text-xl flex items-center gap-1"> Binary Bloom <span className="text-blue-500 text-2xl">.</span> </Link>
 
     {/* Desktop Menu */}
     <nav className="hidden xl:flex space-x-8 items-center">
@@ -63,9 +68,10 @@ return (
         </>
       ) : (
         <>
-          <Link to="/login" className="block hover:text-blue-400">Login</Link>
+          <Link to="/login" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="block hover:text-blue-400">Login</Link>
           <Link
             to="/register"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
           >
             Get Started

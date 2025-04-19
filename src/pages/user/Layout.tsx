@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from '@/context/AuthContext';
 import { Navigate, Outlet } from "react-router-dom";
 
 const DashboardLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { isAuthenticated, isLoading } = useAuth()
+  const { pathname } = useLocation()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -35,15 +36,15 @@ const DashboardLayout: React.FC = () => {
               </button>
             </div>
                 <div className="flex flex-col p-6 space-y-4 text-white">
-                  <Link to="/dashboard" className="text-lg font-semibold" onClick={toggleSidebar}>Dashboard</Link>
-                  <Link to="/invest" className="text-lg font-semibold" onClick={toggleSidebar}>Investments</Link>
-                  <Link to="/deposit" className="text-lg font-semibold" onClick={toggleSidebar}>Deposit</Link>
-                  <Link to="/withdraw" className="text-lg font-semibold" onClick={toggleSidebar}>Withdrawals</Link>
-                  <Link to="/transfer-funds" className="text-lg font-semibold" onClick={toggleSidebar}>Transfer Funds</Link>
-                  <Link to="/history" className="text-lg font-semibold" onClick={toggleSidebar}>History</Link>
-                  <Link to="/profile" className="text-lg font-semibold" onClick={toggleSidebar}>Settings</Link>
-                  <Link to="/referral" className="text-lg font-semibold" onClick={toggleSidebar}>Referral</Link>
-                  <Link to="/logout" className="text-lg font-semibold" onClick={toggleSidebar}>Logout</Link>
+                  <Link to="/dashboard" className={`text-lg font-semibold ${pathname == '/dashboard' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}><p></p> Dashboard</Link>
+                  <Link to="/invest" className={`text-lg font-semibold ${pathname == '/invest' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>Investments</Link>
+                  <Link to="/deposit" className={`text-lg font-semibold ${pathname == '/deposit' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>Deposit</Link>
+                  <Link to="/withdraw" className={`text-lg font-semibold ${pathname == '/withdraw' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>Withdrawals</Link>
+                  <Link to="/transfer-funds" className={`text-lg font-semibold ${pathname == '/transfer-funds' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>Transfer Funds</Link>
+                  {/* <Link to="/history" className={`text-lg font-semibold ${pathname == '/history' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>History</Link> */}
+                  <Link to="/profile" className={`text-lg font-semibold ${pathname == '/profile' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>Settings</Link>
+                  <Link to="/referral" className={`text-lg font-semibold ${pathname == '/referral' && 'p-3 rounded-xl w-fit bg-red-600'} `} onClick={toggleSidebar}>Referral</Link>
+                  <a href="/logout" className={`text-lg font-semibold ${pathname == '/logout' && 'p-3 rounded-xl w-fit bg-red-600'} `} >Logout</a>
             </div>
                 </div>
         <div className={`transition-all duration-300 ml-0 flex-1 p-6 ${isSidebarOpen ? "ml-64" : ""}`}>

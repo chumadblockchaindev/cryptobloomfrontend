@@ -1,6 +1,6 @@
 import api from "@/api";
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -140,9 +140,9 @@ const Register = () => {
 
         <p className="text-center text-sm text-gray-600 mt-6">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-500 hover:underline">
             Log in
-          </a>
+          </Link>
         </p>
       </div>
     </section>
