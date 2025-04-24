@@ -17,12 +17,10 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
 
   const { user }  = useAuth()
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await api.get("/api/active-investments/");
-        console.log(res.data)
         setData(res.data);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
@@ -44,7 +42,7 @@ const Dashboard = () => {
         </div>
         <div className="bg-white border-t-4 border-green-500 shadow-xl rounded-xl p-6">
           <h2 className="text-sm text-gray-600 font-medium uppercase">Total Earnings</h2>
-          <p className="text-3xl font-bold text-green-700 mt-2">${user.total_interest_earned}</p>
+          <p className="text-3xl font-bold text-green-700 mt-2">${user.total_interest_earned || 0}</p>
         </div>
       </div>
   

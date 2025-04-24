@@ -24,7 +24,6 @@ const ProfileUpdate = () => {
     const fetchProfile = async () => {
       try {
         const res = await api.get('/api/user/profile/');
-        console.log(res.data)
         setFormData(prev => ({
           ...prev,
           full_name: res.data.full_name,

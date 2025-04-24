@@ -8,10 +8,10 @@ const Register = () => {
   const [referral, setReferral] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState<string | null>(null);
+  const params = new URLSearchParams(location.search);
+  const refCode = params.get("ref");
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const refCode = params.get("ref");
     if (refCode) setReferral(refCode);
   }, [location.search]);
 
@@ -94,6 +94,7 @@ const Register = () => {
             value={referral}
             onChange={(e) => setReferral(e.target.value)}
             placeholder="Referral (optional)"
+            disabled={refCode ? true : false}
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <div className="flex items-start">

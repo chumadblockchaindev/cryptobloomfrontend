@@ -1,10 +1,12 @@
 import api from "@/api";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TransferEarnings = () => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  const navigate = useNavigate()
 
   const handleTransfer = async (source: "investment" | "referral") => {
     if (!amount || parseFloat(amount) <= 0) {
@@ -18,6 +20,7 @@ const TransferEarnings = () => {
       await api.post("/api/transfer-earnings/", { source, amount });
       setStatus(`✅ ${source} earnings transferred successfully!`);
       setAmount("");
+      navigate('/dashboard')
     } catch (err) {
       console.error("Transfer error:", err);
       setStatus("❌ Transfer failed. Please try again.");

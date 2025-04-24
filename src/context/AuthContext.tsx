@@ -49,17 +49,23 @@ useEffect(() => {
 
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem("REFRESHTOKEN");
+
+    if(!refreshToken) { 
+      setIsAuthenticated(false)
+      setIsLoading(false)
+      return
+    }
     
     try {
         const res = await api.post("/api/token/refresh/", {
             refresh: refreshToken,
         });
+        console.log(res)
+
         if (res.status === 200) {
             localStorage.setItem("ACCESSTOKEN", res.data.access)
             setIsAuthenticated(true)
             setIsLoading(false)
-        } else {
-            setIsAuthenticated(false)
         }
     } catch (error) {
         setIsAuthenticated(false);
@@ -95,14 +101,15 @@ async function loginAuth ({ credientials }: LoginCredientials ) {
   
     const decoded = jwtDecode (token)
     const tokenExpiration = decoded.exp  
-    const now = Date.now() / 1000
-
-    if(tokenExpiration! < now) {
+    const now = Math.floor(Date.now() / 1000)
+    console.log(tokenExpiration)
+    console.log(now)
+    if(tokenExpiration! <= now ) {
       await refreshToken()
-    } else {
+    }else{
       setIsAuthenticated(true)
       setIsLoading(false)
-    }
+    } 
   }
 
   return (

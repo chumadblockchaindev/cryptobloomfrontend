@@ -1,17 +1,20 @@
 import { useState } from "react";
 import api from "@/api";
 import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Invest = () => {
   const [amount, setAmount] = useState("");
   const [plan, setPlan] = useState("Gold");
   const {user} = useAuth()
+  const navigate = useNavigate()
 
   const handleInvest = async (e: any) => {
     e.preventDefault();
     try {
       await api.post("/api/invest/", { amount, plan });
       alert("Investment successful!");
+      navigate('/dashboard')
     } catch (err) {
       console.error("Investment error:", err);
     }

@@ -1,16 +1,19 @@
 import api from "@/api";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Withdrawal = () => {
   const [amount, setAmount] = useState("");
   const {user} = useAuth()
+  const navigate = useNavigate()
 
   const handleWithdraw = async (e: any) => {
     e.preventDefault();
     try {
       await api.post("/api/withdrawals/notify/", { amount });
       alert("Withdrawal request sent!");
+      navigate("/dashboard")
     } catch (err) {
       console.error("Withdrawal error:", err);
     }

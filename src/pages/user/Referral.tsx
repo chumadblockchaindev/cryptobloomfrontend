@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 
 const Referral = () => {
   const [loading, setLoading] = useState(false);
-  
+  const [text, setText] = useState("Copy");
+
   const [referralData, setReferralData] = useState({
     referral_link: "",
     referrals_count: 0,
@@ -82,9 +83,9 @@ function checkReferralUrl(url: string) {
   
             <button
               className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300"
-              onClick={() => navigator.clipboard.writeText(referralData.referral_link)}
+              onClick={() => {navigator.clipboard.writeText(referralData.referral_link); setText("copied")}}
             >
-              Copy Link
+             {text}
             </button>
           </>
         ) : (

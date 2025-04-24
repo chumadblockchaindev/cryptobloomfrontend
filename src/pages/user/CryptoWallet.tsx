@@ -56,6 +56,7 @@ const CryptoWallet: React.FC = () => {
                     <p className="font-medium mb-4">
                         Send ${state.amount} to the wallet address below in the {selectedCoin} Network. Any coin sent to a different network will be lost.
                     </p>
+                    <p className="font-medium">Your Deposit would reflect after Blockchain confirmation. If you notice any delay kindly contact our support team</p>
                 </div>
             )}
             <label className="mt-4 block">Choose a Coin:</label>

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const apiUrl = "https://cryptobloom-server.onrender.com";
+// const apiUrl = "https://cryptobloom-server.onrender.com";
+const apiUrl = "http:127.0.0.1:8080";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiUrl,
