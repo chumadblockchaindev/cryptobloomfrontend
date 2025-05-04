@@ -4,6 +4,12 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from '@/context/AuthContext';
 import { Navigate, Outlet } from "react-router-dom";
 
+// interface Earnings {
+// investment_earnings: string
+// referral_earnings: string
+// total_earnings: string
+// }
+
 const DashboardLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { isAuthenticated, isLoading } = useAuth()

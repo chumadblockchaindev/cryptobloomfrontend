@@ -36,6 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 useEffect(() => {
   const fetchProfile = async () => {
     try {
+      await api.get("/api/calculate/earnings/");    
       const res1 = await api.get("/api/user/earnings/");
       const res = await api.get('/api/user/profile/');
       setUser({...user, full_name: res.data.full_name, balance: res.data.balance, total_interest_earned: res1.data.total_earnings})
@@ -102,8 +103,7 @@ async function loginAuth ({ credientials }: LoginCredientials ) {
     const decoded = jwtDecode (token)
     const tokenExpiration = decoded.exp  
     const now = Math.floor(Date.now() / 1000)
-    console.log(tokenExpiration)
-    console.log(now)
+    
     if(tokenExpiration! <= now ) {
       await refreshToken()
     }else{

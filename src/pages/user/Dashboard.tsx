@@ -8,7 +8,8 @@ interface OngoinginvestmentProp {
   amount: number,
   start_date: string,
   end_date: string,
-  daily_earning: string
+  daily_earning: string,
+  total_interest_earned: string
 }
 
 const InvestmentPlans = ['Gold', 'Diamond', 'Bronze']
@@ -57,6 +58,7 @@ const Dashboard = () => {
                 <tr>
                   <th className="px-6 py-3">Investment Plan</th>
                   <th className="px-6 py-3">Daily Earning</th>
+                  <th className="px-6 py-3">Total Interest Earned</th>
                   <th className="px-6 py-3">Investment Amount</th>
                   <th className="px-6 py-3">Days Remaining</th>
                 </tr>
@@ -68,6 +70,7 @@ const Dashboard = () => {
                       {InvestmentPlans[investment.plan - 1]} Investment
                     </td>
                     <td className="px-6 py-4 text-green-600">${investment.daily_earning}</td>
+                    <td className="px-6 py-4 text-green-600">${investment.total_interest_earned}</td>
                     <td className="px-6 py-4 text-gray-800">${investment.amount}</td>
                     <td className="px-6 py-4 text-yellow-600 font-medium">
                       {7 - Math.floor((new Date().getTime() - new Date(investment.start_date).getTime()) / 86400000)} days left
