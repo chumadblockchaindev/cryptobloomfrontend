@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         investment_earnings: earningsData.investment_earnings.toString(),
         total_earnings: earningsData.total_earnings.toString()
       };
-  
+      console.log(responses)
       setUser(userData);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -157,7 +157,7 @@ useEffect(() => {
 
   initializeAuth();
 
-}, [auth]); // Add other dependencies if used inside the effect
+}, []); // Add other dependencies if used inside the effect
 
 
   return (

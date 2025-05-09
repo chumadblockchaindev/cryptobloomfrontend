@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
 
   const { user }  = useAuth()
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,7 +78,7 @@ const Dashboard = () => {
                     <td className="px-6 py-4 text-green-600">${investment.total_interest_earned}</td>
                     <td className="px-6 py-4 text-gray-800">${investment.amount}</td>
                     <td className="px-6 py-4 text-yellow-600 font-medium">
-                      {Math.floor((new Date(investment.end_date).getTime() - new Date().getTime()) / 86400000)} days left
+                      {1 + Math.floor((new Date(investment.end_date).getTime() - new Date().getTime()) / 86400000)} days left
                     </td>
                   </tr>
                 ))}
