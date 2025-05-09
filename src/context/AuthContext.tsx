@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { jwtDecode } from 'jwt-decode'
 import api from "@/api";
 
@@ -16,37 +16,69 @@ export interface LoginCredientials {
 
 interface UserData {
   full_name: string, 
+  email: string,
+  username: string,
   balance: number,
-  total_interest_earned: string
+  wallet_btc: string;
+  wallet_eth: string;
+  wallet_usdt: string;
+  referral_earnings: string
+  investment_earnings: string
+  total_earnings: string,
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<UserData>({full_name: '', balance: 0, total_interest_earned: ''})
+  const [user, setUser] = useState<UserData>(
+    {
+      full_name: '',
+      email: '',
+      username: '',
+      balance: 0,
+      wallet_btc: '',
+      wallet_eth: '',
+      wallet_usdt: '',
+      referral_earnings: '',
+      investment_earnings: '',
+      total_earnings: ''
+    }
+  )
   const[isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    auth().catch(() => setIsAuthenticated(false))
-}, [isAuthenticated, setIsAuthenticated])
-
-
-useEffect(() => {
-  const fetchProfile = async () => {
+  const getMultipleData = useCallback(async () => {
+    const urls = [
+      '/api/calculate/earnings/',
+      '/api/user/earnings/',
+      '/api/user/profile/'
+    ];
+  
     try {
-      await api.get("/api/calculate/earnings/");    
-      const res1 = await api.get("/api/user/earnings/");
-      const res = await api.get('/api/user/profile/');
-      setUser({...user, full_name: res.data.full_name, balance: res.data.balance, total_interest_earned: res1.data.total_earnings})
-    } catch (err) {
-      console.error(err);
+      const responses = await Promise.all(urls.map(url => api.get(url)));
+      // Actually process the responses and set state
+      const [_, earningsData, profileData] = responses.map(response => response.data);
+    
+      // Merge the relevant data into a single user object
+      const userData: UserData = {
+        full_name: profileData.full_name,
+        email: profileData.email,
+        username: profileData.username,
+        balance: profileData.balance,
+        wallet_btc: profileData.wallet_btc || '',
+        wallet_eth: profileData.wallet_eth || '',
+        wallet_usdt: profileData.wallet_usdt || '',
+        referral_earnings: earningsData.referral_earnings.toString(),
+        investment_earnings: earningsData.investment_earnings.toString(),
+        total_earnings: earningsData.total_earnings.toString()
+      };
+  
+      setUser(userData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-  };
-
-  fetchProfile();
-}, [isAuthenticated]);
+  }, []); 
 
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem("REFRESHTOKEN");
@@ -54,7 +86,6 @@ useEffect(() => {
     if(!refreshToken) { 
       setIsAuthenticated(false)
       setIsLoading(false)
-      return
     }
     
     try {
@@ -91,26 +122,43 @@ async function loginAuth ({ credientials }: LoginCredientials ) {
   }
 }
 
-  const auth = async () => {
-    const token = localStorage.getItem("ACCESSTOKEN")
+const auth = useCallback(async () => {
+  const token = localStorage.getItem("ACCESSTOKEN");
 
-    if(!token) { 
-      setIsAuthenticated(false)
-      setIsLoading(false)
-      return
-    }
-  
-    const decoded = jwtDecode (token)
-    const tokenExpiration = decoded.exp  
-    const now = Math.floor(Date.now() / 1000)
-    
-    if(tokenExpiration! <= now ) {
-      await refreshToken()
-    }else{
-      setIsAuthenticated(true)
-      setIsLoading(false)
-    } 
+  if (!token) { 
+    setIsAuthenticated(false);
+    return;
   }
+
+  const decoded = jwtDecode(token);
+  const tokenExpiration = decoded.exp;  
+  const now = Math.floor(Date.now() / 1000);
+    
+  if (tokenExpiration! <= now) {
+    await refreshToken();
+  } else {
+    setIsAuthenticated(true);
+  }
+}, [refreshToken]);
+
+
+
+useEffect(() => {
+  const initializeAuth = async () => {
+    try {
+      await auth();
+      await getMultipleData();
+    } catch (error) {
+      setIsAuthenticated(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  initializeAuth();
+
+}, [auth]); // Add other dependencies if used inside the effect
+
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, error, loginAuth, user , isLoading }}>

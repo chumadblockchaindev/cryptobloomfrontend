@@ -12,16 +12,12 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const DashboardLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated } = useAuth()
   const { pathname } = useLocation()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  if(isLoading){
-    return <>Loading...</>
-  }
 
   return (
     <div className="flex flex-col h-screen">

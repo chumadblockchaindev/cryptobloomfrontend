@@ -36,14 +36,18 @@ const Dashboard = () => {
       <h1 className="text-4xl font-bold text-gray-800 mb-8">Welcome, {localStorage.getItem("full_name")}</h1>
   
       {/* Balance and Earnings Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div className="bg-white border-t-4 border-indigo-500 shadow-xl rounded-xl p-6">
           <h2 className="text-sm text-gray-600 font-medium uppercase">Balance</h2>
           <p className="text-3xl font-bold text-indigo-700 mt-2">${Number.parseFloat(`${user.balance}`).toFixed(2)}</p>
         </div>
         <div className="bg-white border-t-4 border-green-500 shadow-xl rounded-xl p-6">
-          <h2 className="text-sm text-gray-600 font-medium uppercase">Total Earnings</h2>
-          <p className="text-3xl font-bold text-green-700 mt-2">${user.total_interest_earned || 0}</p>
+          <h2 className="text-sm text-gray-600 font-medium uppercase">Investment Earnings</h2>
+          <p className="text-3xl font-bold text-green-700 mt-2">${user.investment_earnings || 0}</p>
+        </div>
+        <div className="bg-white border-t-4 border-green-500 shadow-xl rounded-xl p-6">
+          <h2 className="text-sm text-gray-600 font-medium uppercase">Referral Earnings</h2>
+          <p className="text-3xl font-bold text-green-700 mt-2">${user.referral_earnings || 0}</p>
         </div>
       </div>
   
