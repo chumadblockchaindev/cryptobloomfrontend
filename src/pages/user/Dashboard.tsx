@@ -77,7 +77,7 @@ const Dashboard = () => {
                     <td className="px-6 py-4 text-green-600">${investment.total_interest_earned}</td>
                     <td className="px-6 py-4 text-gray-800">${investment.amount}</td>
                     <td className="px-6 py-4 text-yellow-600 font-medium">
-                      {7 - Math.floor((new Date().getTime() - new Date(investment.start_date).getTime()) / 86400000)} days left
+                      {Math.floor((new Date(investment.end_date).getTime() - new Date().getTime()) / 86400000)} days left
                     </td>
                   </tr>
                 ))}
